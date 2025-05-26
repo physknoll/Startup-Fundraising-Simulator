@@ -711,8 +711,11 @@ export default function HomePage() {
         <p className="text-lg text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto">
           Model your startup&apos;s fundraising journey from pre-seed to Series C and beyond. Understand dilution, ESOP impact, and investor returns.
         </p>
-        <p className="text-sm text-muted-foreground mt-2">
+        <p className="text-base text-muted-foreground mt-2">
           brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Harrison Knoll</a>
+        </p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Special thanks: Inspired by <a href="https://www.prequelvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Mathias Bosse at Prequel Ventures</a>
         </p>
         {isClient && calculationResult.calculatedRounds.length > 0 && (
           <div className="mt-6">
