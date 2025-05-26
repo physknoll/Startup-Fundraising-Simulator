@@ -7,7 +7,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
-import { OwnershipStage, InvestorShare } from "@/lib/types";
+import { OwnershipStage } from "@/lib/types";
 
 interface OwnershipTableProps {
   ownershipStages: OwnershipStage[];

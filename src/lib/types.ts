@@ -45,4 +45,17 @@ export interface OwnershipStage {
   shares: InvestorShare[];
 }
 
+export interface CalculationResult {
+  calculatedRounds: CalculatedRound[];
+  ownershipStages: OwnershipStage[];
+  summaryMetrics: SummaryMetrics;
+}
+
+export interface SummaryMetrics {
+  totalFundsRaised: number;
+  finalFounderOwnership: number;
+  finalEsopOwnership: number;
+  exitValuation: number;
+}
+
 // ... other types for Revenue Growth, Investor Returns tables 

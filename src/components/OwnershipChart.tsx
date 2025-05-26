@@ -2,13 +2,12 @@
 
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { OwnershipStage, InvestorShare } from '@/lib/types';
+import { OwnershipStage } from '@/lib/types';
 
 interface OwnershipChartProps {
   ownershipStages: OwnershipStage[];
 }
 
-// Function to generate distinct colors (simple version)
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042',
   '#A020F0', '#FF00FF', '#FF6347', '#7FFF00',

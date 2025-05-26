@@ -45,71 +45,105 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  
+  /* Browser Use Inspired Palette */
+  --background: oklch(0.98 0 0); /* Near White */
+  --foreground: oklch(0.18 0.01 250); /* Dark Gray/Almost Black text */
+  
+  --card: oklch(0.98 0 0); /* Cards on white background */
+  --card-foreground: oklch(0.18 0.01 250);
+  
+  --popover: oklch(0.98 0 0); /* Popovers on white background */
+  --popover-foreground: oklch(0.18 0.01 250);
+  
+  /* Primary Accent (Orange) */
+  --primary: oklch(0.7 0.19 44); /* Vibrant Orange - e.g., #FF7A00 equivalent */
+  --primary-foreground: oklch(0.98 0 0); /* White text on orange buttons */
+  
+  /* Secondary - For subtle backgrounds or elements */
+  --secondary: oklch(0.95 0.01 250); /* Very light gray */
+  --secondary-foreground: oklch(0.25 0.01 250); /* Darker gray text on light gray */
+  
+  /* Muted - For less important text, borders */
+  --muted: oklch(0.95 0.01 250);   /* Light gray, same as secondary background */
+  --muted-foreground: oklch(0.55 0.01 250); /* Medium Gray text */
+  
+  /* Accent - Can be used for secondary highlights or alternative elements */
+  /* Let's make this the warmer/peach orange for tags initially */
+  --accent: oklch(0.92 0.08 60); /* Lighter/Peachy Orange - e.g. #FFE8CC */
+  --accent-foreground: oklch(0.6 0.15 45); /* A darker orange for text on this peachy bg */
+  
+  --destructive: oklch(0.577 0.245 27.325); /* Keep existing or adjust if needed */
+  
+  --border: oklch(0.92 0.01 250); /* Light Gray border */
+  --input: oklch(0.92 0.01 250);  /* Light Gray input background/border */
+  --ring: oklch(0.7 0.19 44 / 0.5); /* Orange ring for focus, with opacity */
+
+  /* Header Gradient Colors */
+  --header-gradient-start: oklch(0.65 0.22 40);
+  --header-gradient-end: oklch(0.7 0.25 45);
+
+  /* Chart colors - keep for now, can be refined in Phase 3 */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Sidebar - Not prominent in your app, but good to update if ever used */
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.18 0.01 250);
+  --sidebar-primary: oklch(0.7 0.19 44);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.92 0.08 60);
+  --sidebar-accent-foreground: oklch(0.6 0.15 45);
+  --sidebar-border: oklch(0.92 0.01 250);
+  --sidebar-ring: oklch(0.7 0.19 44 / 0.5);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Dark Mode - For now, let's make it a simple inversion or a standard dark theme.
+     The target "Browser Use" site is light-themed, so this is secondary.
+     A quick update might be:
+  */
+  --background: oklch(0.18 0.01 250); /* Dark Gray */
+  --foreground: oklch(0.95 0.01 250); /* Light Gray text */
+  
+  --card: oklch(0.22 0.01 250); /* Slightly lighter dark gray for cards */
+  --card-foreground: oklch(0.95 0.01 250);
+  
+  --popover: oklch(0.22 0.01 250);
+  --popover-foreground: oklch(0.95 0.01 250);
+  
+  --primary: oklch(0.7 0.19 44); /* Orange can stay vibrant */
+  --primary-foreground: oklch(0.18 0.01 250); /* Dark text on orange buttons in dark mode */
+  
+  --secondary: oklch(0.25 0.01 250);
+  --secondary-foreground: oklch(0.90 0.01 250);
+  
+  --muted: oklch(0.25 0.01 250);
+  --muted-foreground: oklch(0.65 0.01 250); /* Lighter muted text */
+  
+  --accent: oklch(0.28 0.05 60); /* Darker peachy for tags */
+  --accent-foreground: oklch(0.85 0.1 55); /* Lighter orange text on dark peach */
+  
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  
+  --border: oklch(0.3 0.01 250); /* Slightly lighter border in dark mode */
+  --input: oklch(0.3 0.01 250 / 0.5);  /* Semi-transparent input background or distinct dark input */
+  --ring: oklch(0.7 0.19 44 / 0.7); /* Orange ring, maybe more opaque */
+
+  /* Update chart and sidebar colors for dark mode accordingly */
+  --chart-1: oklch(0.488 0.243 264.376); /* Keep or adjust */
+  /* ... other dark mode variables ... */
+   --sidebar: oklch(0.22 0.01 250);
+  --sidebar-foreground: oklch(0.95 0.01 250);
+  --sidebar-primary: oklch(0.7 0.19 44);
+  --sidebar-primary-foreground: oklch(0.18 0.01 250);
+  --sidebar-accent: oklch(0.28 0.05 60);
+  --sidebar-accent-foreground: oklch(0.85 0.1 55);
+  --sidebar-border: oklch(0.3 0.01 250);
+  --sidebar-ring: oklch(0.7 0.19 44 / 0.7);
 }
 
 @layer base {
@@ -118,5 +152,47 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Add transition for smooth color changes if dark mode toggler exists */
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  @keyframes text-gradient-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-text-gradient-flow {
+    background-size: 200% 200%;
+    animation: text-gradient-flow 8s ease infinite;
+  }
+
+  @keyframes draw-underline {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  .animate-underline-draw::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Adjust as needed for spacing */
+    left: 0;
+    height: 2px; /* Thickness of the underline */
+    background-color: var(--primary);
+    width: 0; /* Start with no width */
+    animation: draw-underline 1.5s ease-out forwards;
+    animation-delay: 0.5s; /* Optional delay before animation starts */
   }
 }

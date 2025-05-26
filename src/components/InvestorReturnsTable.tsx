@@ -30,13 +30,7 @@ const formatMultiple = (value: number | null | undefined, defaultValue: string =
   return `${value.toFixed(1)}x`;
 };
 
-interface InvestorReturnSummary extends InvestorShare {
-    // investedAmount is already in InvestorShare
-    // valueAtExit is already in InvestorShare
-    // returnMultiple is already in InvestorShare
-    // We might want to add ownership at specific key stages if needed for this table explicitly
-    // For now, assuming `InvestorShare` from the *final exit stage* contains all necessary info.
-}
+type InvestorReturnSummary = InvestorShare;
 
 export const InvestorReturnsTable: React.FC<InvestorReturnsTableProps> = ({ ownershipStages, calculatedRounds }) => {
   if (!ownershipStages || ownershipStages.length === 0 || !calculatedRounds || calculatedRounds.length === 0) {

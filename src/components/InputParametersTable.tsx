@@ -33,10 +33,7 @@ const formatPercentage = (value: number | null | undefined) => {
   return `${roundedValue}%`;
 };
 
-const formatMultiple = (value: number | null | undefined) => {
-  if (value === null || value === undefined) return 'N/A';
-  return `${value}x`;
-};
+
 
 export const InputParametersTable: React.FC<InputParametersTableProps> = ({ 
   roundsData, 
@@ -407,7 +404,7 @@ export const InputParametersTable: React.FC<InputParametersTableProps> = ({
                           
                           <div className="md:col-span-2 lg:col-span-3 pt-2">
                              <p className="text-xs text-muted-foreground break-words">
-                               Liquidation Preference: If "None", global toggle applies. For SAFEs, terms convert from SAFE notes. Participating preferred gets preference AND shares with common.
+                               Liquidation Preference: If &quot;None&quot;, global toggle applies. For SAFEs, terms convert from SAFE notes. Participating preferred gets preference AND shares with common.
                              </p>
                              <p className="text-xs text-muted-foreground break-words mt-1">
                                Note: Protective Provisions and Drag-Along Rights are important governance terms but do not directly change the financial calculations in this simulator. Anti-dilution (which can be relevant in down rounds) is modeled.

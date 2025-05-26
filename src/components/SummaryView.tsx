@@ -50,11 +50,11 @@ export const SummaryView: React.FC<SummaryViewProps> = ({ calculatedRounds, owne
             <span className="font-semibold">{formatCurrency(exitRound?.roundSize)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Founders' Ownership at Exit:</span>
+            <span className="text-muted-foreground">Founders&apos; Ownership at Exit:</span>
             <span className="font-semibold">{formatPercentage(foundersExitShare?.percentage)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Founders' Value at Exit:</span>
+            <span className="text-muted-foreground">Founders&apos; Value at Exit:</span>
             <span className="font-semibold">{formatCurrency(foundersExitShare?.valueAtExit)}</span>
           </div>
           <div className="flex justify-between">

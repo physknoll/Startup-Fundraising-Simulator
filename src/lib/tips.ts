@@ -55,7 +55,7 @@ export const generalTooltips: Record<string, TipData> = {
   },
   liquidationPreference: {
     title: "Liquidation Preference",
-    explanation: "In a sale/acquisition, preferred stockholders get their money back (e.g., 1x their investment) before common stockholders. Can be Non-Participating (investor chooses preference OR converts to common) or Participating (investor gets preference AND shares with common)."
+    explanation: "In a sale/acquisition, preferred stockholders get their money back (e.g., 1x their investment) before common stockholders. Can be Non-Participating (investor chooses preference OR converts to common) or Participating (investor gets preference AND shares with common). Note: This simulator implements 'Full Double Dip' Participating preference where investors receive their preference amount AND then also participate pro-rata in the entire exit value."
   },
   multiple: {
     title: "Liquidation Multiple (x)",
@@ -83,7 +83,7 @@ export const generalTooltips: Record<string, TipData> = {
   },
   globalLiquidationPreference: {
     title: "Global Liquidation Preference (Default)",
-    explanation: "This toggle enables a default 1x Non-Participating Liquidation Preference for all investors in rounds where specific Liquidation Preference terms are not set in that round's advanced settings. Non-Participating means investors choose either their preference amount OR to convert to common and share pro-rata, whichever is greater. It does not apply to Founders or ESOP shares."
+    explanation: "This toggle enables a default 1x Non-Participating Liquidation Preference for all investors in rounds where specific Liquidation Preference terms are not set in that round's advanced settings. Non-Participating means investors choose either their preference amount OR to convert to common and share pro-rata, whichever is greater. It does not apply to Founders or ESOP shares. Note: If total liquidation preference claims exceed exit proceeds, payouts are reduced pro-rata based on claim size, assuming all preferred shares rank equally (pari passu)."
   },
   protectiveProvisions: {
     title: "Protective Provisions",

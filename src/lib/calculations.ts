@@ -1,4 +1,4 @@
-import { RoundInput, CalculatedRound, InvestorShare, OwnershipStage } from './types';
+import { RoundInput, CalculatedRound, InvestorShare, OwnershipStage, SummaryMetrics } from './types';
 
 export function calculatePreMoney(roundSize: number, dilutionPercent: number): number | null {
   if (dilutionPercent === 0) {
@@ -30,6 +30,7 @@ export interface CalculateAllRoundsParams {
 export interface CalculationResult {
   calculatedRounds: CalculatedRound[];
   ownershipStages: OwnershipStage[];
+  summaryMetrics: SummaryMetrics;
 }
 
 interface ProcessedSAFE {
@@ -108,7 +109,7 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
     let requiredARR: number | null = null;
     const roundName = roundInput.name;
 
-    let ownershipBeforeRoundInvestment = currentOwnership.map(s => ({ ...s }));
+    const ownershipBeforeRoundInvestment = currentOwnership.map(s => ({ ...s }));
 
     if (roundInput.roundType !== 'SAFE' && roundInput.name !== 'Exit') {
       const targetEsopPercentForRound = (roundInput.optionPoolPercent !== null && roundInput.optionPoolPercent !== undefined && roundInput.optionPoolPercent >= 0)
@@ -145,7 +146,7 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
             ownershipBeforeRoundInvestment.push({ name: 'ESOP', percentage: targetEsopPercentForRound, valueAtExit: 0, investedAmount: 0 });
           }
 
-          let currentSum = ownershipBeforeRoundInvestment.reduce((sum, share) => sum + share.percentage, 0);
+          const currentSum = ownershipBeforeRoundInvestment.reduce((sum, share) => sum + share.percentage, 0);
           if (currentSum !== 100 && currentSum > 0) {
             const normalizationFactor = 100 / currentSum;
             ownershipBeforeRoundInvestment.forEach(share => {
@@ -198,25 +199,20 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
               });
             } else if (safe.effectiveDilutionPercent !== null && safe.effectiveDilutionPercent >= 100) {
                 console.warn(`SAFE ${safeDetails.name} effective dilution is ${safe.effectiveDilutionPercent}%. This would wipe out other shareholders. Clamping dilution effect for this SAFE.`);
-                const safeDilutionFactor = (100 - safe.effectiveDilutionPercent) / 100;
+                const safeDilutionFactor = (100 - safe.effectiveDilutionPercent) / 100; // will be <= 0
                 currentOwnership.forEach(share => share.percentage *= Math.max(0, safeDilutionFactor));
-                 currentOwnership.push({
+                currentOwnership.push({
                     name: `${safeDetails.name} Investors (SAFE)`,
-                    percentage: Math.min(100, safe.effectiveDilutionPercent),
+                    percentage: Math.min(100, safe.effectiveDilutionPercent), // SAFE claims up to 100%
                     valueAtExit: 0,
                     investedAmount: safeDetails.roundSize ?? 0,
                 });
-                let currentSum = currentOwnership.reduce((sum, share) => sum + share.percentage, 0);
-                if (currentSum > 100 && currentSum > 0) {
-                    const esopAndFounders = currentOwnership.filter(s => s.name ==='ESOP' || s.name === 'Founders');
-                    if (esopAndFounders.length > 0) {
-                       if(safe.effectiveDilutionPercent >= 100) esopAndFounders.forEach(s => s.percentage = 0);
-                    }
-                    currentSum = currentOwnership.reduce((sum, share) => sum + share.percentage, 0);
-                    if (currentSum > 0) { 
-                        const normFactor = 100 / currentSum;
-                        currentOwnership.forEach(s => s.percentage *= normFactor);
-                    }
+                
+                // Normalize to ensure total equals 100%
+                const currentSum = currentOwnership.reduce((sum, share) => sum + share.percentage, 0);
+                if (currentSum > 0 && currentSum !== 100) {
+                    const normFactor = 100 / currentSum;
+                    currentOwnership.forEach(s => s.percentage *= normFactor);
                 }
             }
             safe.converted = true;
@@ -329,13 +325,13 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
       } else {
         provisionalPayout = commonEquivalent;
       }
-      (share as any)._provisionalPayout = provisionalPayout;
+      (share as InvestorShare & { _provisionalPayout?: number })._provisionalPayout = provisionalPayout;
     });
 
-    const totalProvisionalClaim = exitStageData.shares.reduce((sum, s) => sum + ((s as any)._provisionalPayout || 0), 0);
+    const totalProvisionalClaim = exitStageData.shares.reduce((sum, s) => sum + ((s as InvestorShare & { _provisionalPayout?: number })._provisionalPayout || 0), 0);
 
     exitStageData.shares.forEach(share => {
-      const provisionalPayout = (share as any)._provisionalPayout || 0;
+      const provisionalPayout = (share as InvestorShare & { _provisionalPayout?: number })._provisionalPayout || 0;
       if (totalProvisionalClaim > 0 && finalExitValuation > 0) {
         if (totalProvisionalClaim > finalExitValuation) {
           share.valueAtExit = (provisionalPayout / totalProvisionalClaim) * finalExitValuation;
@@ -345,7 +341,7 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
       } else {
         share.valueAtExit = 0;
       }
-      delete (share as any)._provisionalPayout;
+      delete (share as InvestorShare & { _provisionalPayout?: number })._provisionalPayout;
 
       if (share.investedAmount !== undefined && share.investedAmount > 0) {
         share.returnMultiple = share.valueAtExit / share.investedAmount;
@@ -385,5 +381,5 @@ export function calculateAllRounds(params: CalculateAllRoundsParams): Calculatio
     });
   }
   
-  return { calculatedRounds: calculatedRoundsResult, ownershipStages };
+  return { calculatedRounds: calculatedRoundsResult, ownershipStages, summaryMetrics: {} as SummaryMetrics };
 } 
