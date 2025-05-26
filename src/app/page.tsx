@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect, useRef } from 'react';
-import { RoundInput, SummaryMetrics } from '@/lib/types';
-import { calculateAllRounds, CalculationResult } from '@/lib/calculations';
+import { RoundInput, SummaryMetrics, CalculationResult, GlobalConfig } from '@/lib/types';
+import { calculateAllRounds } from '@/lib/calculations';
 import { InputParametersTable } from '@/components/InputParametersTable';
 import {
   Tabs,
@@ -29,6 +29,7 @@ import { generalTooltips } from "@/lib/tips";
 import { InfoTip } from "@/components/InfoTip";
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
+import { PlusCircle } from "lucide-react";
 // import { Download } from 'lucide-react';
 // import { Canvg } from 'canvg';
 // import dynamic from 'next/dynamic';
@@ -220,7 +221,21 @@ const initialRawRounds: RoundInput[] = [
   },
 ];
 
-export default function HomePage() {
+// Initial configuration state
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const initialConfiguration: GlobalConfig = {
+  defaultEsopPercentage: 10,
+  liquidationPreferenceEnabled: false,
+  esopPercentage: 10,
+  liquidationPreference: '1x Non-Participating',
+  defaultEsopPercentageForPricedRounds: 10,
+  globalLiquidationPreference: '1x Non-Participating',
+  newHirePool: 10,
+  postSeriesAFounderDilution: 20,
+  includeConversionDetails: true,
+};
+
+export default function Home() {
   const [inputRounds, setInputRounds] = useState<RoundInput[]>(initialRawRounds);
   const [esopPercentage, setEsopPercentage] = useState<number>(10);
   const [liquidationPreferenceEnabled, setLiquidationPreferenceEnabled] = useState<boolean>(false);
@@ -235,6 +250,9 @@ export default function HomePage() {
   const ownershipChartRef = useRef<HTMLDivElement>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [isConfigurationOpen, setIsConfigurationOpen] = useState(false);
+
+  // State for InputParametersTable advanced settings
+  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -705,20 +723,20 @@ export default function HomePage() {
   // }, [calculationResult.ownershipStages, isClient]);
 
   return (
-    <main className="container mx-auto p-8">
+    <main className="container mx-auto p-4 sm:p-6 md:p-8">
       <header className="text-center my-8 md:my-12 lg:my-16" itemScope itemType="https://schema.org/WebApplication">
         <h1 className="relative text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--header-gradient-start)] to-[var(--header-gradient-end)] animate-underline-draw pb-2" itemProp="name">Startup Fundraising Simulator</h1>
-        <p className="text-lg text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto" itemProp="description">
+        <p className="text-lg md:text-xl text-muted-foreground mt-2 sm:mt-3 md:mt-4 max-w-2xl mx-auto" itemProp="description">
           Model your startup&apos;s fundraising journey from pre-seed to Series C and beyond. Understand dilution, ESOP impact, and investor returns.
         </p>
-        <p className="text-base text-muted-foreground mt-2">
+        <p className="text-base text-muted-foreground mt-2 sm:mt-3 md:mt-4">
           brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary" itemProp="author" itemScope itemType="https://schema.org/Person"><span itemProp="name">Harrison Knoll</span></a>
         </p>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-1 sm:mt-2">
           Special thanks: Inspired by <a href="https://www.prequelvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Mathias Bosse at Prequel Ventures</a>
         </p>
         {isClient && calculationResult.calculatedRounds.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <Button 
               onClick={generatePDF}
               disabled={isGeneratingPDF}
@@ -727,49 +745,9 @@ export default function HomePage() {
             </Button>
           </div>
         )}
-        {/* {isClient && calculationResult.calculatedRounds.length > 0 && ownershipChartImage !== null && (
-          <div className="mt-6">
-            <PDFDownloadLinkWithNoSSR
-              document={
-                <SimplifiedReportPDF companyName="My Startup Inc." />
-              }
-              fileName="Fundraising_Strategy.pdf"
-            >
-              {({ blob, url, loading, error }) =>
-                loading ? (
-                  <Button disabled>
-                    Generating PDF...
-                  </Button>
-                ) : (
-                  <Button>
-                    Export PDF
-                  </Button>
-                )
-              }
-            </PDFDownloadLinkWithNoSSR>
-          </div>
-        )}
-        {isClient && calculationResult.calculatedRounds.length > 0 && ownershipChartImage === null && (
-            <div className="mt-6">
-                <Button disabled>
-                    Generating Chart for PDF...
-                </Button>
-            </div>
-        )} */}
       </header>
 
-      <section id="input-parameters" className="my-12 p-6 rounded-lg bg-card border">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-foreground">Fundraising Rounds & Growth</h2>
-        </div>
-        <InputParametersTable 
-            roundsData={calculationResult.calculatedRounds} 
-            handleInputChange={handleInputChange}
-            handleRoundEnabledChange={handleRoundEnabledChange}
-        />
-      </section>
-
-      <section id="configuration" className="my-12 p-6 rounded-lg bg-card border">
+      <section id="configuration" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
         <Collapsible open={isConfigurationOpen} onOpenChange={setIsConfigurationOpen}>
           <CollapsibleTrigger asChild>
             <Button variant="ghost" className="flex items-center justify-between w-full p-0 h-auto">
@@ -781,11 +759,11 @@ export default function HomePage() {
               />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 mt-4">
-            <div>
-                <Label htmlFor="esopPercentage" className="text-base flex items-center">
-                    Default Target ESOP % (for Priced Rounds)
-                    <InfoTip tipData={generalTooltips.globalEsopDefault} usePopover />
+          <CollapsibleContent className="space-y-4 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <Label htmlFor="esopPercentage" className="text-sm sm:text-base font-medium flex items-center">
+                  Default Target ESOP % <InfoTip tipData={generalTooltips.esop} />
                 </Label>
                 <div className="flex items-center space-x-2 mt-1">
                     <Input
@@ -803,10 +781,9 @@ export default function HomePage() {
                 <p className="text-xs text-muted-foreground mt-1">
                     This percentage is used as the target option pool for a priced round if no specific target is set in its advanced settings. The pool is typically created/refreshed before the new investment, diluting then-existing shareholders.
                 </p>
-            </div>
-
-            <div>
-                <Label htmlFor="liquidation-preference" className="text-base flex items-center">
+              </div>
+              <div>
+                <Label htmlFor="liquidation-preference" className="text-sm sm:text-base font-medium flex items-center">
                     Global Liquidation Preference (Default)
                     <InfoTip tipData={generalTooltips.globalLiquidationPreference} usePopover />
                 </Label>
@@ -821,65 +798,110 @@ export default function HomePage() {
                 <p className="text-xs text-muted-foreground mt-1">
                     If enabled, this applies a 1x Non-Participating Liquidation Preference to investors in rounds where no specific preference type is set in advanced settings. It does not apply to Founders or ESOP.
                 </p>
+              </div>
+              <div>
+                <Label htmlFor="newHirePoolPercentage" className="text-sm sm:text-base font-medium flex items-center">
+                  New Hire Pool (Annual Refresh) % <InfoTip tipData={generalTooltips.newHirePool} />
+                </Label>
+              </div>
+              <div>
+                <Label htmlFor="postSeriesAFounderDilution" className="text-sm sm:text-base font-medium flex items-center">
+                  Founder Dilution Post-Series A (%) <InfoTip tipData={generalTooltips.postSeriesAFounderDilution} />
+                </Label>
+              </div>
+              <div>
+                <Label htmlFor="includeConversionDetails" className="text-sm sm:text-base font-medium flex items-center">
+                  Show SAFE/Note Conversion Details <InfoTip tipData={generalTooltips.includeConversionDetails} />
+                </Label>
+              </div>
             </div>
           </CollapsibleContent>
         </Collapsible>
       </section>
 
-      <section id="results" className="my-12 p-6 rounded-lg bg-card border">
-        <h2 className="text-2xl font-semibold mb-4 text-foreground">Simulation Results</h2>
+      <section id="input-parameters" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4 sm:mb-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">Fundraising Rounds & Growth</h2>
+        </div>
+        <InputParametersTable 
+            roundsData={calculationResult.calculatedRounds} 
+            handleInputChange={handleInputChange}
+            handleRoundEnabledChange={handleRoundEnabledChange}
+            expandedRowIndex={expandedRowIndex}
+            toggleAdvanced={(index) => setExpandedRowIndex(prevIndex => prevIndex === index ? null : index)}
+        />
+        <div className="flex justify-end space-x-2 mt-4">
+          <Button variant="outline" onClick={() => setInputRounds(prev => [...prev, {
+            name: '',
+            roundSize: null,
+            preMoneyValuation: null,
+            dilutionPercent: null,
+            arrMultiple: null,
+            requiredARR: null,
+            postMoneyValuation: null,
+            isEnabled: true,
+            roundType: 'SAFE',
+            valuationCap: null,
+            discountRate: null,
+            lpType: null,
+            lpMultiple: null,
+            proRataRights: null,
+            antiDilution: null,
+            optionPoolPercent: null,
+            investorBoardSeats: null,
+            protectiveProvisions: null,
+            dragAlongRights: null,
+          }])}><PlusCircle className="mr-2 h-4 w-4" /> Add Round</Button>
+        </div>
+      </section>
+
+      <section id="simulation-results" className="my-6 sm:my-8 md:my-12">
+        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4 sm:mb-6 md:mb-8 text-foreground">
+          Simulation Results
+        </h2>
         <Tabs defaultValue="ownership" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="flex w-full overflow-x-auto pb-1 sm:grid sm:grid-cols-4">
             <TabsTrigger value="summary">Summary</TabsTrigger>
             <TabsTrigger value="revenue-growth">Revenue Growth</TabsTrigger>
             <TabsTrigger value="ownership">Ownership</TabsTrigger>
             <TabsTrigger value="investor-returns">Investor Returns</TabsTrigger>
           </TabsList>
-          <TabsContent value="summary">
-            <div className="p-4 border rounded-lg mt-2">
-              <SummaryView 
-                calculatedRounds={calculationResult.calculatedRounds}
-                ownershipStages={calculationResult.ownershipStages}
-                esopPercentage={esopPercentage}
-              />
+          <TabsContent value="summary" className="mt-4 sm:mt-6 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
+            <SummaryView 
+              calculatedRounds={calculationResult.calculatedRounds}
+              ownershipStages={calculationResult.ownershipStages}
+              esopPercentage={esopPercentage} 
+            />
+          </TabsContent>
+          <TabsContent value="revenue-growth" className="mt-4 sm:mt-6 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
+            <RevenueGrowthTable 
+              calculatedRounds={calculationResult.calculatedRounds} 
+              acv={acv} 
+              onAcvChange={handleAcvChange} 
+            />
+          </TabsContent>
+          <TabsContent value="ownership" className="mt-4 sm:mt-6 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
+            <div ref={ownershipChartRef}>
+              <OwnershipChart ownershipStages={calculationResult.ownershipStages} />
+            </div>
+            <div className="mt-6">
+              <OwnershipTable ownershipStages={calculationResult.ownershipStages} />
             </div>
           </TabsContent>
-          <TabsContent value="revenue-growth">
-            <div className="p-4 border rounded-lg mt-2">
-              <RevenueGrowthTable 
-                calculatedRounds={calculationResult.calculatedRounds}
-                acv={acv}
-                onAcvChange={handleAcvChange}
-              />
-            </div>
-          </TabsContent>
-          <TabsContent value="ownership">
-            <div className="p-4 border rounded-lg mt-2 space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Ownership Chart</h3>
-                <div ref={ownershipChartRef}>
-                  <OwnershipChart ownershipStages={calculationResult.ownershipStages} />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Cap Table by Stage</h3>
-                <OwnershipTable ownershipStages={calculationResult.ownershipStages} />
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent value="investor-returns">
-            <div className="p-4 border rounded-lg mt-2">
-              <InvestorReturnsTable 
-                ownershipStages={calculationResult.ownershipStages}
-                calculatedRounds={calculationResult.calculatedRounds}
-              />
-            </div>
+          <TabsContent value="investor-returns" className="mt-4 sm:mt-6 p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg shadow-sm">
+            <InvestorReturnsTable 
+              ownershipStages={calculationResult.ownershipStages}
+              calculatedRounds={calculationResult.calculatedRounds}
+            />
           </TabsContent>
         </Tabs>
       </section>
 
-      <footer className="text-center text-sm text-muted-foreground my-8 md:my-12 py-8 border-t border-border">
-        © {new Date().getFullYear()} A Harrison Knoll Production. All rights reserved. This tool is for illustrative purposes only.
+      <footer className="text-center text-sm text-muted-foreground py-6 sm:py-8 md:py-12 border-t border-border mt-12 sm:mt-16 md:mt-20">
+        <p>&copy; {new Date().getFullYear()} A Harrison Knoll Production. All rights reserved.</p>
+        <p className="mt-1">
+          This tool is for illustrative purposes only.
+        </p>
       </footer>
     </main>
   );
