@@ -706,13 +706,13 @@ export default function HomePage() {
 
   return (
     <main className="container mx-auto p-8">
-      <header className="text-center my-8 md:my-12 lg:my-16">
-        <h1 className="relative text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--header-gradient-start)] to-[var(--header-gradient-end)] animate-underline-draw pb-2">Startup Fundraising Simulator</h1>
-        <p className="text-lg text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto">
+      <header className="text-center my-8 md:my-12 lg:my-16" itemScope itemType="https://schema.org/WebApplication">
+        <h1 className="relative text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--header-gradient-start)] to-[var(--header-gradient-end)] animate-underline-draw pb-2" itemProp="name">Startup Fundraising Simulator</h1>
+        <p className="text-lg text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto" itemProp="description">
           Model your startup&apos;s fundraising journey from pre-seed to Series C and beyond. Understand dilution, ESOP impact, and investor returns.
         </p>
         <p className="text-base text-muted-foreground mt-2">
-          brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Harrison Knoll</a>
+          brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary" itemProp="author" itemScope itemType="https://schema.org/Person"><span itemProp="name">Harrison Knoll</span></a>
         </p>
         <p className="text-xs text-muted-foreground mt-1">
           Special thanks: Inspired by <a href="https://www.prequelvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Mathias Bosse at Prequel Ventures</a>

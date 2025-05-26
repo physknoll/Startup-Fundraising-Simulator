@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thumbnail Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            position: relative;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 900px;
+            padding: 40px;
+        }
+        
+        .title {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #e97517 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #f97316;
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        
+        .author {
+            font-size: 20px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        
+        .cta {
+            background: #f97316;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            background-image: radial-gradient(circle at 25% 25%, #f97316 2px, transparent 2px),
+                              radial-gradient(circle at 75% 75%, #f97316 2px, transparent 2px);
+            background-size: 100px 100px;
+            background-position: 0 0, 50px 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    <div class="container">
+        <h1 class="title">Startup Fundraising Simulator</h1>
+        <p class="subtitle">Model your startup's fundraising journey from pre-seed to Series C and beyond</p>
+        <p class="author">brought to you by <strong>Harrison Knoll</strong></p>
+        <button class="cta">Export PDF Report</button>
+    </div>
+</body>
+</html> 

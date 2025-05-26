@@ -1,0 +1,21 @@
+{
+  "name": "Startup Fundraising Simulator",
+  "short_name": "Fundraising Sim",
+  "description": "Model your startup's fundraising journey from pre-seed to Series C and beyond",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+} 
