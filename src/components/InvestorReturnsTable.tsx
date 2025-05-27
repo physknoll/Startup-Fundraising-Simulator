@@ -8,7 +8,6 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { OwnershipStage, InvestorShare, CalculatedRound } from "@/lib/types";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 interface InvestorReturnsTableProps {
   ownershipStages: OwnershipStage[];
@@ -62,51 +61,35 @@ export const InvestorReturnsTable: React.FC<InvestorReturnsTableProps> = ({ owne
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Investor Returns & Multiples</CardTitle>
-        <CardDescription>
-          Projected returns and multiples for each investor group at exit.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="sticky left-0 bg-card z-10 px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap w-[150px] min-w-[120px]">
-                  Investor / Fund
-                </TableHead>
-                <TableHead className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">Invested ($)</TableHead>
-                <TableHead className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">Ownership (%)</TableHead>
-                <TableHead className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">Value at Exit ($)</TableHead>
-                <TableHead className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">Return Multiple (x)</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {investorSummaries.map((investor) => (
-                <TableRow key={investor.name}>
-                  <TableCell className="font-medium sticky left-0 bg-card z-10 px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap w-[150px] min-w-[120px]">
-                    {investor.name}
-                  </TableCell>
-                  <TableCell className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">
-                    {formatCurrency(investor.investedAmount)}
-                  </TableCell>
-                  <TableCell className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">
-                    {formatPercentage(investor.percentage)}
-                  </TableCell>
-                  <TableCell className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">
-                    {formatCurrency(investor.valueAtExit)}
-                  </TableCell>
-                  <TableCell className="text-right px-1 py-2 text-xs sm:text-sm sm:px-2 whitespace-nowrap min-w-[100px]">
-                    {formatMultiple(investor.returnMultiple)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[200px]">Investor Group</TableHead>
+          <TableHead className="text-right">Invested ($)</TableHead>
+          {/* It might be useful to show ownership % at key stages, e.g., after Series A, before Exit */}
+          {/* For simplicity, the plan asks for Exit %, which is already used for Exit Value */}
+          <TableHead className="text-right">Exit Ownership (%)</TableHead>
+          <TableHead className="text-right">Exit Value ($)</TableHead>
+          <TableHead className="text-right">Return Multiple (x)</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {investorSummaries.map(summary => (
+          <TableRow key={summary.name}>
+            <TableCell className="font-medium">{summary.name}</TableCell>
+            <TableCell className="text-right">
+              {summary.name === 'Founders' && (summary.investedAmount === null || summary.investedAmount === 0) 
+                ? 'N/A' 
+                : formatCurrency(summary.investedAmount)}
+            </TableCell>
+            <TableCell className="text-right">{formatPercentage(summary.percentage)}</TableCell>
+            <TableCell className="text-right">{formatCurrency(summary.valueAtExit)}</TableCell>
+            <TableCell className="text-right">
+                { (summary.investedAmount === 0 && summary.valueAtExit > 0) ? '∞' : formatMultiple(summary.returnMultiple) }
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }; 

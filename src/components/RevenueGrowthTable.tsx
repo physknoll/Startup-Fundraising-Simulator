@@ -10,8 +10,6 @@ import {
 import { CalculatedRound } from "@/lib/types";
 import { Input } from "@/components/ui/input"; // For ACV input
 import { Label } from "@/components/ui/label"; // For ACV input label
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { InfoTip } from "@/components/InfoTip";
 
 interface RevenueGrowthTableProps {
   calculatedRounds: CalculatedRound[];
@@ -53,7 +51,7 @@ interface RevenueMetric extends CalculatedRound {
 }
 
 export const RevenueGrowthTable: React.FC<RevenueGrowthTableProps> = ({ calculatedRounds, acv, onAcvChange }) => {
-  if (!calculatedRounds || calculatedRounds.length === 0) {
+  if (!calculatedRounds) {
     return <p>No revenue data to display.</p>;
   }
 
@@ -102,116 +100,50 @@ export const RevenueGrowthTable: React.FC<RevenueGrowthTableProps> = ({ calculat
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Revenue Growth & Valuation Metrics</CardTitle>
-        <CardDescription>
-          Projected revenue growth and key valuation metrics at each funding stage.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-6 p-3 sm:p-4 border rounded-lg bg-muted/30">
-          <div className="flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
-            <Label htmlFor="acvInput" className="text-sm font-medium w-full sm:w-auto">
-              Average Contract Value (ACV):
-            </Label>
-            <div className="flex items-center space-x-2 w-full sm:w-auto">
-              <span className="text-sm text-muted-foreground">$</span>
-              <Input
-                id="acvInput"
+    <div className="space-y-4">
+        <div className="flex items-center space-x-2 p-4 border rounded-md bg-muted/50">
+            <Label htmlFor="acvInput" className="text-sm font-medium">Annual Contract Value (ACV) per Customer ($):</Label>
+            <Input 
                 type="number"
+                id="acvInput"
                 value={acv}
                 onChange={(e) => onAcvChange(Number(e.target.value))}
-                className="w-full sm:w-[120px] text-sm"
+                className="w-32"
                 placeholder="e.g., 50000"
-                min="0"
-              />
-              <InfoTip tipData={{ title: "ACV", explanation: "Average Annual Contract Value per customer. Used to estimate the number of customers needed to reach ARR targets." }} />
-            </div>
-          </div>
+            />
         </div>
-
         <Table>
-          <TableHeader className="hidden md:table-header-group">
+        <TableHeader>
             <TableRow>
-              <TableHead className="w-[15%]">Round</TableHead>
-              <TableHead className="text-right">Pre-Money ($)</TableHead>
-              <TableHead className="text-right">ARR Multiple (x)</TableHead>
-              <TableHead className="text-right">Required ARR ($)</TableHead>
-              <TableHead className="text-right">Added ARR ($)</TableHead>
-              <TableHead className="text-right">Growth Rate (%)</TableHead>
-              <TableHead className="text-right">Growth Factor (x)</TableHead>
-              <TableHead className="text-right">Customers Needed</TableHead>
-              <TableHead className="text-right">Customers to Add</TableHead>
+            <TableHead className="w-[120px]">Round</TableHead>
+            <TableHead className="text-right">Pre-Money ($)</TableHead>
+            <TableHead className="text-right">ARR Multiple (x)</TableHead>
+            <TableHead className="text-right">Required ARR ($)</TableHead>
+            <TableHead className="text-right">Added ARR ($)</TableHead>
+            <TableHead className="text-right">Growth Rate (%)</TableHead>
+            <TableHead className="text-right">Growth Factor (x)</TableHead>
+            <TableHead className="text-right">Customers Needed</TableHead>
+            <TableHead className="text-right">Customers to Add</TableHead>
             </TableRow>
-          </TableHeader>
-          <TableBody>
+        </TableHeader>
+        <TableBody>
             {revenueMetrics.map((metric, index) => (
-              <React.Fragment key={`${metric.name}-${index}`}>
-                {/* Mobile Card View */}
-                <div className={`block md:hidden border-b border-border p-4 space-y-3 mb-4 rounded-lg bg-card ${!metric.isEnabled ? "opacity-50" : ""}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-lg text-primary">{metric.name}</h3>
-                    {/* Optional: Add a toggle or indicator if the round is disabled, though revenue table might always show enabled rounds */}
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <div>
-                      <p className="text-xs text-muted-foreground">Pre-Money:</p>
-                      <p>{formatCurrency(metric.preMoneyValuation)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Post-Money:</p>
-                      <p>{formatCurrency(metric.postMoneyValuation)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Round Size:</p>
-                      <p>{formatCurrency(metric.roundSize)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Dilution:</p>
-                      <p>{formatPercentage(metric.dilutionPercent)}</p>
-                    </div>
-                     <div>
-                      <p className="text-xs text-muted-foreground">ARR Multiple:</p>
-                      <p>{formatMultiple(metric.arrMultiple)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Required ARR:</p>
-                      <p>{formatCurrency(metric.requiredARR)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Added ARR:</p>
-                      <p>{formatCurrency(metric.addedARR)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Growth Rate:</p>
-                      <p>{formatPercentage(metric.growthRate)}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Customers for ARR:</p>
-                      <p>{formatNumber(metric.customersNeeded)}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Desktop TableRow */}
-                <TableRow className={`hidden md:table-row ${!metric.isEnabled ? "opacity-50" : ""}`}>
-                  <TableCell className="font-medium">{metric.name}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(metric.preMoneyValuation)}</TableCell>
-                  <TableCell className="text-right">{metric.arrMultiple === null ? 'N/A' : formatMultiple(metric.arrMultiple)}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(metric.requiredARR)}</TableCell>
-                  <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatCurrency(metric.addedARR)}</TableCell>
-                  <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatPercentage(metric.growthRate)}</TableCell>
-                  <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatMultiple(metric.growthFactor)}</TableCell>
-                  <TableCell className="text-right">{acv > 0 ? formatNumber(metric.customersNeeded) : 'N/A (Set ACV)'}</TableCell>
-                  <TableCell className="text-right">{acv > 0 && !(metric.name === 'Pre-Seed' && metric.requiredARR === null) ? formatNumber(metric.customersToAdd) : 'N/A'}</TableCell>
-                </TableRow>
-              </React.Fragment>
+            // Do not show Pre-Seed if its requiredARR is null, or Exit if it shouldn't show growth metrics
+            // However, the plan implies showing all rounds. Let's show all.
+            <TableRow key={`${metric.name}-${index}`}>
+                <TableCell className="font-medium">{metric.name}</TableCell>
+                <TableCell className="text-right">{formatCurrency(metric.preMoneyValuation)}</TableCell>
+                <TableCell className="text-right">{metric.arrMultiple === null ? 'N/A' : formatMultiple(metric.arrMultiple)}</TableCell>
+                <TableCell className="text-right">{formatCurrency(metric.requiredARR)}</TableCell>
+                <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatCurrency(metric.addedARR)}</TableCell>
+                <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatPercentage(metric.growthRate)}</TableCell>
+                <TableCell className="text-right">{metric.name === 'Pre-Seed' && metric.requiredARR === null ? 'N/A' : formatMultiple(metric.growthFactor)}</TableCell>
+                <TableCell className="text-right">{acv > 0 ? formatNumber(metric.customersNeeded) : 'N/A (Set ACV)'}</TableCell>
+                <TableCell className="text-right">{acv > 0 && !(metric.name === 'Pre-Seed' && metric.requiredARR === null) ? formatNumber(metric.customersToAdd) : 'N/A'}</TableCell>
+            </TableRow>
             ))}
-          </TableBody>
+        </TableBody>
         </Table>
-      </CardContent>
-    </Card>
+    </div>
   );
 }; 

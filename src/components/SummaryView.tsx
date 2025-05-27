@@ -45,25 +45,25 @@ export const SummaryView: React.FC<SummaryViewProps> = ({ calculatedRounds, owne
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="flex flex-col sm:flex-row sm:justify-between">
-            <span className="text-muted-foreground text-sm">Target Exit Valuation:</span>
-            <span className="font-semibold text-sm sm:text-base">{formatCurrency(exitRound?.roundSize)}</span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Target Exit Valuation:</span>
+            <span className="font-semibold">{formatCurrency(exitRound?.roundSize)}</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between">
-            <span className="text-muted-foreground text-sm">Founders&apos; Ownership at Exit:</span>
-            <span className="font-semibold text-sm sm:text-base">{formatPercentage(foundersExitShare?.percentage)}</span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Founders&apos; Ownership at Exit:</span>
+            <span className="font-semibold">{formatPercentage(foundersExitShare?.percentage)}</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between">
-            <span className="text-muted-foreground text-sm">Founders&apos; Value at Exit:</span>
-            <span className="font-semibold text-sm sm:text-base">{formatCurrency(foundersExitShare?.valueAtExit)}</span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Founders&apos; Value at Exit:</span>
+            <span className="font-semibold">{formatCurrency(foundersExitShare?.valueAtExit)}</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:justify-between">
-            <span className="text-muted-foreground text-sm">Total ESOP at Exit:</span>
-            <span className="font-semibold text-sm sm:text-base">{formatPercentage(exitStage?.shares.find(sh => sh.name === 'ESOP')?.percentage)}</span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Total ESOP at Exit:</span>
+            <span className="font-semibold">{formatPercentage(exitStage?.shares.find(sh => sh.name === 'ESOP')?.percentage)}</span>
           </div>
-           <div className="flex flex-col sm:flex-row sm:justify-between">
-            <span className="text-muted-foreground text-sm">Effective ESOP Rate (applied pre-round):</span>
-            <span className="font-semibold text-sm sm:text-base">{esopPercentage}%</span>
+           <div className="flex justify-between">
+            <span className="text-muted-foreground">Effective ESOP Rate (applied pre-round):</span>
+            <span className="font-semibold">{esopPercentage}%</span>
           </div>
         </CardContent>
       </Card>
@@ -74,24 +74,24 @@ export const SummaryView: React.FC<SummaryViewProps> = ({ calculatedRounds, owne
           <CardDescription>Overview of each fundraising round and key valuations.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table className="mt-4">
+          <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-auto sm:w-[150px] px-1 py-2 sm:px-2">Round</TableHead>
-                <TableHead className="text-right px-1 py-2 sm:px-2">Pre-Money ($)</TableHead>
-                <TableHead className="text-right px-1 py-2 sm:px-2">Round Size ($)</TableHead>
-                <TableHead className="text-right px-1 py-2 sm:px-2">Post-Money ($)</TableHead>
-                <TableHead className="text-right px-1 py-2 sm:px-2">Dilution (%)</TableHead>
+                <TableHead className="w-[150px]">Round</TableHead>
+                <TableHead className="text-right">Round Size ($)</TableHead>
+                <TableHead className="text-right">Dilution (%)</TableHead>
+                <TableHead className="text-right">Post-Money Val. ($)</TableHead>
+                <TableHead className="text-right">Required ARR ($)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {calculatedRounds.filter(r => r.name !== 'Exit').map(round => (
                 <TableRow key={round.name}>
-                  <TableCell className="font-medium px-1 py-2 sm:px-2">{round.name}</TableCell>
-                  <TableCell className="text-right px-1 py-2 sm:px-2">{formatCurrency(round.preMoneyValuation)}</TableCell>
-                  <TableCell className="text-right px-1 py-2 sm:px-2">{formatCurrency(round.roundSize)}</TableCell>
-                  <TableCell className="text-right px-1 py-2 sm:px-2">{formatCurrency(round.postMoneyValuation)}</TableCell>
-                  <TableCell className="text-right px-1 py-2 sm:px-2">{formatPercentage(round.dilutionPercent, 'N/A')}</TableCell>
+                  <TableCell className="font-medium">{round.name}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(round.roundSize)}</TableCell>
+                  <TableCell className="text-right">{formatPercentage(round.dilutionPercent)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(round.postMoneyValuation)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(round.requiredARR)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

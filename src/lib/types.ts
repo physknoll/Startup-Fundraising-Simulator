@@ -58,16 +58,4 @@ export interface SummaryMetrics {
   exitValuation: number;
 }
 
-export interface GlobalConfig {
-  defaultEsopPercentage: number;
-  liquidationPreferenceEnabled: boolean;
-  esopPercentage: number;
-  liquidationPreference: string; // Could be more specific like: 'None' | '1x Non-Participating' | 'Participating' etc.
-  defaultEsopPercentageForPricedRounds: number;
-  globalLiquidationPreference: string; // Similar to liquidationPreference, could be a union of specific strings
-  newHirePool: number;
-  postSeriesAFounderDilution: number;
-  includeConversionDetails: boolean;
-}
-
 // ... other types for Revenue Growth, Investor Returns tables 
