@@ -8,8 +8,8 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { CalculatedRound } from "@/lib/types";
-import { Input } from "@/components/ui/input"; // For ACV input
-import { Label } from "@/components/ui/label"; // For ACV input label
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface RevenueGrowthTableProps {
   calculatedRounds: CalculatedRound[];
@@ -101,14 +101,14 @@ export const RevenueGrowthTable: React.FC<RevenueGrowthTableProps> = ({ calculat
 
   return (
     <div className="space-y-4">
-        <div className="flex items-center space-x-2 p-4 border rounded-md bg-muted/50">
-            <Label htmlFor="acvInput" className="text-sm font-medium">Annual Contract Value (ACV) per Customer ($):</Label>
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:space-x-2 p-3 sm:p-4 border rounded-md bg-muted/50 mb-4">
+            <Label htmlFor="acvInput" className="text-sm font-medium whitespace-nowrap shrink-0">Annual Contract Value (ACV):</Label>
             <Input 
                 type="number"
                 id="acvInput"
                 value={acv}
                 onChange={(e) => onAcvChange(Number(e.target.value))}
-                className="w-32"
+                className="w-full sm:w-32"
                 placeholder="e.g., 50000"
             />
         </div>

@@ -18,7 +18,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download } from "lucide-react";
 import { OwnershipChart } from "@/components/OwnershipChart";
 import { OwnershipTable } from "@/components/OwnershipTable";
 import { RevenueGrowthTable } from "@/components/RevenueGrowthTable";
@@ -322,9 +322,25 @@ export default function HomePage() {
   };
 
   const handleAcvChange = (newAcv: number) => {
-    if (newAcv >= 0) {
-        setAcv(newAcv);
-    }
+    setAcv(newAcv);
+    const results = calculateAllRounds({
+      rounds: inputRounds,
+      initialFounderOwnership: 100,
+      defaultEsopPercentageForPricedRounds: esopPercentage,
+      liquidationPreferenceEnabled: liquidationPreferenceEnabled,
+    });
+    setCalculationResult(results);
+  };
+
+  const handleAcvChangeForGrowthTable = (newAcv: number) => {
+    setAcv(newAcv);
+    const results = calculateAllRounds({
+      rounds: inputRounds,
+      initialFounderOwnership: 100,
+      defaultEsopPercentageForPricedRounds: esopPercentage,
+      liquidationPreferenceEnabled: liquidationPreferenceEnabled,
+    });
+    setCalculationResult(results);
   };
 
   const generatePDF = async () => {
@@ -705,103 +721,71 @@ export default function HomePage() {
   // }, [calculationResult.ownershipStages, isClient]);
 
   return (
-    <main className="container mx-auto p-8">
-      <header className="text-center my-8 md:my-12 lg:my-16" itemScope itemType="https://schema.org/WebApplication">
-        <h1 className="relative text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--header-gradient-start)] to-[var(--header-gradient-end)] animate-underline-draw pb-2" itemProp="name">Startup Fundraising Simulator</h1>
-        <p className="text-lg text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto" itemProp="description">
-          Model your startup&apos;s fundraising journey from pre-seed to Series C and beyond. Understand dilution, ESOP impact, and investor returns.
+    <main className="container mx-auto p-3 sm:p-6 md:p-8">
+      <header className="text-center my-6 sm:my-8 md:my-12 lg:my-16" itemScope itemType="https://schema.org/WebApplication">
+        <h1 className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--header-gradient-start)] to-[var(--header-gradient-end)] animate-underline-draw pb-2" itemProp="name">
+          Startup Fundraising Simulator
+        </h1>
+        <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 sm:mt-3 md:mt-4 max-w-xl sm:max-w-2xl mx-auto" itemProp="description">
+          Model your startup&apos;s fundraising journey from Pre-Seed to Exit. Understand dilution, valuations, and potential investor returns with this interactive simulator.
         </p>
-        <p className="text-base text-muted-foreground mt-2">
-          brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary" itemProp="author" itemScope itemType="https://schema.org/Person"><span itemProp="name">Harrison Knoll</span></a>
+        <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl sm:max-w-2xl mx-auto">
+          Adjust round sizes, pre-money valuations (or ARR multiples), dilution percentages, and advanced terms like SAFEs, option pools, and liquidation preferences to see their impact in real-time.
         </p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Special thanks: Inspired by <a href="https://www.prequelvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Mathias Bosse at Prequel Ventures</a>
+        <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl sm:max-w-2xl mx-auto">
+          Results include per-round calculations, a cap table breakdown by stage, revenue growth projections, and investor return summaries at exit.
         </p>
         {isClient && calculationResult.calculatedRounds.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <Button 
               onClick={generatePDF}
               disabled={isGeneratingPDF}
+              size="default"
             >
-              {isGeneratingPDF ? 'Generating PDF...' : 'Export PDF Report'}
+              {isGeneratingPDF ? 'Generating PDF...' : (<> <Download className="mr-2 h-4 w-4 hidden sm:inline"/> Export PDF Report</>)}
             </Button>
           </div>
         )}
-        {/* {isClient && calculationResult.calculatedRounds.length > 0 && ownershipChartImage !== null && (
-          <div className="mt-6">
-            <PDFDownloadLinkWithNoSSR
-              document={
-                <SimplifiedReportPDF companyName="My Startup Inc." />
-              }
-              fileName="Fundraising_Strategy.pdf"
-            >
-              {({ blob, url, loading, error }) =>
-                loading ? (
-                  <Button disabled>
-                    Generating PDF...
-                  </Button>
-                ) : (
-                  <Button>
-                    Export PDF
-                  </Button>
-                )
-              }
-            </PDFDownloadLinkWithNoSSR>
-          </div>
-        )}
-        {isClient && calculationResult.calculatedRounds.length > 0 && ownershipChartImage === null && (
-            <div className="mt-6">
-                <Button disabled>
-                    Generating Chart for PDF...
-                </Button>
-            </div>
-        )} */}
       </header>
 
-      <section id="input-parameters" className="my-12 p-6 rounded-lg bg-card border">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-foreground">Fundraising Rounds & Growth</h2>
+      <section id="input-parameters" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 rounded-lg bg-card border">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 md:mb-6">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-2 sm:mb-0">Fundraising Rounds & Growth</h2>
         </div>
-        <InputParametersTable 
-            roundsData={calculationResult.calculatedRounds} 
-            handleInputChange={handleInputChange}
-            handleRoundEnabledChange={handleRoundEnabledChange}
-        />
+        <InputParametersTable roundsData={inputRounds} handleInputChange={handleInputChange} handleRoundEnabledChange={handleRoundEnabledChange} />
       </section>
 
-      <section id="configuration" className="my-12 p-6 rounded-lg bg-card border">
+      <section id="configuration" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 rounded-lg bg-card border">
         <Collapsible open={isConfigurationOpen} onOpenChange={setIsConfigurationOpen}>
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" className="flex items-center justify-between w-full p-0 h-auto">
-              <h2 className="text-2xl font-semibold text-foreground">Configuration</h2>
+            <Button variant="ghost" className="flex items-center justify-between w-full p-0 h-auto text-left hover:bg-transparent focus-visible:ring-0">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground">Configuration</h2>
               <ChevronDown 
-                className={`h-5 w-5 transition-transform duration-200 ${
-                  isConfigurationOpen ? 'transform rotate-180' : ''
-                }`}
+                className={`h-5 w-5 transition-transform duration-200 ${isConfigurationOpen ? 'transform rotate-180' : ''}`}
               />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 mt-4">
+          <CollapsibleContent className="space-y-4 sm:space-y-6 mt-4">
             <div>
                 <Label htmlFor="esopPercentage" className="text-base flex items-center">
                     Default Target ESOP % (for Priced Rounds)
                     <InfoTip tipData={generalTooltips.globalEsopDefault} usePopover />
                 </Label>
-                <div className="flex items-center space-x-2 mt-1">
+                <div className="flex flex-col items-start gap-2 mt-1 sm:flex-row sm:items-center sm:gap-2">
                     <Input
                         type="number"
                         id="esopPercentage"
                         value={esopPercentage}
                         onChange={handleEsopChange}
                         placeholder="e.g., 10"
-                        className="w-24"
+                        className="w-full sm:w-24"
                         min="0"
                         max="100"
                     />
                     <span>%</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                    This percentage is used as the target option pool for a priced round if no specific target is set in its advanced settings. The pool is typically created/refreshed before the new investment, diluting then-existing shareholders.
+                    This percentage is used as the target option pool created (or topped up) before a new priced round, if not specified in that round's advanced settings. It impacts founder dilution.
                 </p>
             </div>
 
@@ -819,67 +803,78 @@ export default function HomePage() {
                     <span className="text-sm">Enable 1x Non-Participating for Investors</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                    If enabled, this applies a 1x Non-Participating Liquidation Preference to investors in rounds where no specific preference type is set in advanced settings. It does not apply to Founders or ESOP.
+                    If enabled, this applies a 1x Non-Participating liquidation preference to all rounds where &quot;Liquidation Preference&quot; in advanced settings is set to &quot;None&quot;. This is a common default.
                 </p>
             </div>
           </CollapsibleContent>
         </Collapsible>
       </section>
 
-      <section id="results" className="my-12 p-6 rounded-lg bg-card border">
-        <h2 className="text-2xl font-semibold mb-4 text-foreground">Simulation Results</h2>
-        <Tabs defaultValue="ownership" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="summary">Summary</TabsTrigger>
-            <TabsTrigger value="revenue-growth">Revenue Growth</TabsTrigger>
-            <TabsTrigger value="ownership">Ownership</TabsTrigger>
-            <TabsTrigger value="investor-returns">Investor Returns</TabsTrigger>
-          </TabsList>
-          <TabsContent value="summary">
-            <div className="p-4 border rounded-lg mt-2">
-              <SummaryView 
-                calculatedRounds={calculationResult.calculatedRounds}
-                ownershipStages={calculationResult.ownershipStages}
-                esopPercentage={esopPercentage}
-              />
+      <section id="results" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 rounded-lg bg-card border">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 sm:mb-4 text-foreground">Simulation Results</h2>
+        {isClient && calculationResult ? (
+          <Tabs defaultValue="ownership" className="w-full">
+            <div className="overflow-x-auto pb-1 mb-2 -mx-1 px-1">
+              <TabsList className="grid grid-flow-col auto-cols-max gap-1 sm:w-full sm:grid-cols-4">
+                <TabsTrigger value="summary" className="px-3 py-1.5 text-xs sm:text-sm">Summary</TabsTrigger>
+                <TabsTrigger value="revenue-growth" className="px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap">Revenue Growth</TabsTrigger>
+                <TabsTrigger value="ownership" className="px-3 py-1.5 text-xs sm:text-sm">Ownership</TabsTrigger>
+                <TabsTrigger value="investor-returns" className="px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap">Investor Returns</TabsTrigger>
+              </TabsList>
             </div>
-          </TabsContent>
-          <TabsContent value="revenue-growth">
-            <div className="p-4 border rounded-lg mt-2">
-              <RevenueGrowthTable 
-                calculatedRounds={calculationResult.calculatedRounds}
-                acv={acv}
-                onAcvChange={handleAcvChange}
-              />
-            </div>
-          </TabsContent>
-          <TabsContent value="ownership">
-            <div className="p-4 border rounded-lg mt-2 space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Ownership Chart</h3>
-                <div ref={ownershipChartRef}>
-                  <OwnershipChart ownershipStages={calculationResult.ownershipStages} />
+            <TabsContent value="summary">
+              <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
+                <SummaryView 
+                  calculatedRounds={calculationResult.calculatedRounds}
+                  totalInvestment={calculationResult.totalInvestment}
+                  finalValuation={calculationResult.finalValuation}
+                  finalOwnership={calculationResult.finalOwnership}
+                  exitCashFlows={calculationResult.exitCashFlows}
+                  isClient={isClient} 
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="revenue-growth">
+              <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
+                <RevenueGrowthTable 
+                  calculatedRounds={calculationResult.calculatedRounds} 
+                  acv={calculationResult.acvForGrowthTable} 
+                  onAcvChange={handleAcvChangeForGrowthTable}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="ownership">
+              <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2 space-y-4 sm:space-y-6">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Ownership Chart</h3>
+                  <div ref={ownershipChartRef} className="w-full min-h-[280px] sm:min-h-[400px]">
+                    <OwnershipChart ownershipStages={calculationResult.ownershipStages} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Ownership Table</h3>
+                  <OwnershipTable ownershipStages={calculationResult.ownershipStages} />
                 </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-3">Cap Table by Stage</h3>
-                <OwnershipTable ownershipStages={calculationResult.ownershipStages} />
+            </TabsContent>
+            <TabsContent value="investor-returns">
+              <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
+                <InvestorReturnsTable 
+                    investorReturns={calculationResult.investorReturns}
+                    calculatedRounds={calculationResult.calculatedRounds} 
+                />
               </div>
-            </div>
-          </TabsContent>
-          <TabsContent value="investor-returns">
-            <div className="p-4 border rounded-lg mt-2">
-              <InvestorReturnsTable 
-                ownershipStages={calculationResult.ownershipStages}
-                calculatedRounds={calculationResult.calculatedRounds}
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+          </Tabs>
+        ) : (
+          <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
+            <p>Loading simulation results or adjust parameters to begin...</p>
+          </div>
+        )}
       </section>
 
-      <footer className="text-center text-sm text-muted-foreground my-8 md:my-12 py-8 border-t border-border">
-        © {new Date().getFullYear()} A Harrison Knoll Production. All rights reserved. This tool is for illustrative purposes only.
+      <footer className="text-center text-xs sm:text-sm text-muted-foreground my-8 md:my-12 py-6 sm:py-8 border-t border-border">
+        © {new Date().getFullYear()} A Harrison Knoll Production. All rights reserved. For illustrative purposes only.
       </footer>
     </main>
   );

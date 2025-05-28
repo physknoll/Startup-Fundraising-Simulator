@@ -45,10 +45,24 @@ export interface OwnershipStage {
   shares: InvestorShare[];
 }
 
+export interface InvestorReturnSummary {
+  roundName: string;
+  totalInvested: number;
+  proceedsAtExit: number;
+  multiple: number;
+  effectiveOwnership?: number; // For display
+}
+
 export interface CalculationResult {
   calculatedRounds: CalculatedRound[];
   ownershipStages: OwnershipStage[];
   summaryMetrics: SummaryMetrics;
+  totalInvestment: number;
+  finalValuation: number;
+  finalOwnership: InvestorShare[];
+  exitCashFlows: any; // Replace 'any' with a more specific type if available
+  acvForGrowthTable: number;
+  investorReturns: InvestorReturnSummary[];
 }
 
 export interface SummaryMetrics {
