@@ -719,10 +719,10 @@ export default function HomePage() {
         <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 sm:mt-3 md:mt-4 max-w-xl sm:max-w-2xl mx-auto" itemProp="description">
           Model your startup&apos;s fundraising journey from Pre-Seed to Exit. Understand dilution, valuations, and potential investor returns with this interactive simulator.
         </p>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-3">
-          Brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary inline-flex items-center" itemProp="author" itemScope itemType="https://schema.org/Person">
+        <p className="text-sm sm:text-base font-bold text-foreground mt-3">
+          Brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary inline-flex items-center font-bold" itemProp="author" itemScope itemType="https://schema.org/Person">
             <span itemProp="name">Harrison Knoll</span>
-            <Linkedin className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+            <Linkedin className="ml-1 h-4 w-4 sm:h-5 sm:w-5" />
           </a>
         </p>
         <p className="text-xs text-muted-foreground mt-1">
