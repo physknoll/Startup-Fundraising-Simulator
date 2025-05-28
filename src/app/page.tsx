@@ -18,7 +18,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Download, Linkedin } from "lucide-react";
 import { OwnershipChart } from "@/components/OwnershipChart";
 import { OwnershipTable } from "@/components/OwnershipTable";
 import { RevenueGrowthTable } from "@/components/RevenueGrowthTable";
@@ -729,11 +729,14 @@ export default function HomePage() {
         <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 sm:mt-3 md:mt-4 max-w-xl sm:max-w-2xl mx-auto" itemProp="description">
           Model your startup&apos;s fundraising journey from Pre-Seed to Exit. Understand dilution, valuations, and potential investor returns with this interactive simulator.
         </p>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl sm:max-w-2xl mx-auto">
-          Adjust round sizes, pre-money valuations (or ARR multiples), dilution percentages, and advanced terms like SAFEs, option pools, and liquidation preferences to see their impact in real-time.
+        <p className="text-xs sm:text-sm text-muted-foreground mt-3">
+          Brought to you by <a href="https://www.linkedin.com/in/scienceknoll/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary inline-flex items-center" itemProp="author" itemScope itemType="https://schema.org/Person">
+            <span itemProp="name">Harrison Knoll</span>
+            <Linkedin className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+          </a>
         </p>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl sm:max-w-2xl mx-auto">
-          Results include per-round calculations, a cap table breakdown by stage, revenue growth projections, and investor return summaries at exit.
+        <p className="text-xs text-muted-foreground mt-1">
+          Inspired by concepts from <a href="https://www.prequelvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Mathias Bosse at Prequel Ventures</a>
         </p>
         {isClient && calculationResult.calculatedRounds.length > 0 && (
           <div className="mt-4 sm:mt-6">
