@@ -29,6 +29,7 @@ import { generalTooltips } from "@/lib/tips";
 import { InfoTip } from "@/components/InfoTip";
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
+import { CalculationNarrative } from '@/components/CalculationNarrative';
 // import { Download } from 'lucide-react';
 // import { Canvg } from 'canvg';
 // import dynamic from 'next/dynamic';
@@ -807,11 +808,12 @@ export default function HomePage() {
         {isClient && calculationResult ? (
           <Tabs defaultValue="ownership" className="w-full">
             <div className="overflow-x-auto pb-1 mb-2 -mx-1 px-1">
-              <TabsList className="grid grid-flow-col auto-cols-max gap-1 sm:w-full sm:grid-cols-4">
+              <TabsList className="grid grid-flow-col auto-cols-max gap-1 sm:w-full sm:grid-cols-5">
                 <TabsTrigger value="summary" className="px-3 py-1.5 text-xs sm:text-sm">Summary</TabsTrigger>
                 <TabsTrigger value="revenue-growth" className="px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap">Revenue Growth</TabsTrigger>
                 <TabsTrigger value="ownership" className="px-3 py-1.5 text-xs sm:text-sm">Ownership</TabsTrigger>
                 <TabsTrigger value="investor-returns" className="px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap">Investor Returns</TabsTrigger>
+                <TabsTrigger value="calculation-narrative" className="px-3 py-1.5 text-xs sm:text-sm whitespace-nowrap">Calculation Narrative</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="summary">
@@ -851,6 +853,16 @@ export default function HomePage() {
                 <InvestorReturnsTable 
                     ownershipStages={calculationResult.ownershipStages}
                     calculatedRounds={calculationResult.calculatedRounds} 
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="calculation-narrative">
+              <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
+                <CalculationNarrative 
+                  calculatedRounds={calculationResult.calculatedRounds}
+                  ownershipStages={calculationResult.ownershipStages}
+                  esopPercentage={esopPercentage}
+                  liquidationPreferenceEnabled={liquidationPreferenceEnabled}
                 />
               </div>
             </TabsContent>
