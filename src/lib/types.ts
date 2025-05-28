@@ -60,7 +60,7 @@ export interface CalculationResult {
   totalInvestment: number;
   finalValuation: number;
   finalOwnership: InvestorShare[];
-  exitCashFlows: any; // Replace 'any' with a more specific type if available
+  exitCashFlows: ExitCashFlowsDistribution; // Replace 'any' with a more specific type if available
   acvForGrowthTable: number;
   investorReturns: InvestorReturnSummary[];
 }
@@ -70,6 +70,10 @@ export interface SummaryMetrics {
   finalFounderOwnership: number;
   finalEsopOwnership: number;
   exitValuation: number;
+}
+
+export interface ExitCashFlowsDistribution {
+  [stakeholderName: string]: number;
 }
 
 // ... other types for Revenue Growth, Investor Returns tables 

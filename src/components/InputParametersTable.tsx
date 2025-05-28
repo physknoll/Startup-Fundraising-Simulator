@@ -134,7 +134,7 @@ export const InputParametersTable: React.FC<InputParametersTableProps> = ({
                 disabled={!round.isEnabled}
               />
             </div>
-            <p className='sm:col-span-2 lg:col-span-3 text-xs text-muted-foreground'>Dilution % for SAFE rounds will be calculated upon conversion.</p>
+            <p className='sm:col-span-2 lg:col-span-3 text-xs text-muted-foreground'>Dilution % for SAFE rounds shows the percentage at conversion. Final ownership may be lower due to subsequent dilution events (ESOP creation, future rounds).</p>
           </>
         )}
 
@@ -263,7 +263,7 @@ export const InputParametersTable: React.FC<InputParametersTableProps> = ({
                     </TableCell>
                     <TableCell>
                       {round.name === 'Exit' ? (<span>N/A</span>) : 
-                       round.roundType === 'SAFE' ? (<span className="text-sm text-muted-foreground italic">{displayPercentage(round.dilutionPercent)} (eff.)</span>) : (
+                       round.roundType === 'SAFE' ? (<span className="text-sm text-muted-foreground italic">{displayPercentage(round.dilutionPercent)} (at conversion)</span>) : (
                         <>
                           <Input type="number" value={round.dilutionPercent === null ? '' : String(round.dilutionPercent)} onChange={(e) => handleInputChange(index, 'dilutionPercent', e.target.value)} placeholder="e.g., 10" className="w-full" min="0" max="100" step="0.1" disabled={!round.isEnabled} aria-label={`${round.name} dilution percent`} />
                           {getTip(roundNameKey, 'dilutionPercent')?.typicalRange && <p className="text-xs text-muted-foreground mt-1">Typical: {getTip(roundNameKey, 'dilutionPercent')?.typicalRange}</p>}
@@ -355,7 +355,7 @@ export const InputParametersTable: React.FC<InputParametersTableProps> = ({
                     <div className="space-y-1">
                         <Label htmlFor={`dilution-mobile-${index}`} className="text-sm font-medium">Dilution (%) <InfoTip tipData={generalTooltips.dilution} usePopover /></Label>
                         {round.roundType === 'SAFE' ? 
-                            (<p className="text-sm text-muted-foreground italic pt-2">{displayPercentage(round.dilutionPercent)} (eff.)</p>) : 
+                            (<p className="text-sm text-muted-foreground italic pt-2">{displayPercentage(round.dilutionPercent)} (at conversion)</p>) : 
                             (<>
                                 <Input type="number" id={`dilution-mobile-${index}`} value={round.dilutionPercent === null ? '' : String(round.dilutionPercent)} onChange={(e) => handleInputChange(index, 'dilutionPercent', e.target.value)} placeholder="e.g., 10" className="w-full" min="0" max="100" step="0.1" disabled={!round.isEnabled} aria-label={`${round.name} dilution percent`} />
                                 {getTip(roundNameKey, 'dilutionPercent')?.typicalRange && <p className="text-xs text-muted-foreground mt-1">Typical: {getTip(roundNameKey, 'dilutionPercent')?.typicalRange}</p>}

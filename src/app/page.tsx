@@ -321,17 +321,6 @@ export default function HomePage() {
     }
   };
 
-  const handleAcvChange = (newAcv: number) => {
-    setAcv(newAcv);
-    const results = calculateAllRounds({
-      rounds: inputRounds,
-      initialFounderOwnership: 100,
-      defaultEsopPercentageForPricedRounds: esopPercentage,
-      liquidationPreferenceEnabled: liquidationPreferenceEnabled,
-    });
-    setCalculationResult(results);
-  };
-
   const handleAcvChangeForGrowthTable = (newAcv: number) => {
     setAcv(newAcv);
     const results = calculateAllRounds({
@@ -788,7 +777,7 @@ export default function HomePage() {
                     <span>%</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                    This percentage is used as the target option pool created (or topped up) before a new priced round, if not specified in that round's advanced settings. It impacts founder dilution.
+                    This percentage is used as the target option pool created (or topped up) before a new priced round, if not specified in that round&apos;s advanced settings. It impacts founder dilution.
                 </p>
             </div>
 
@@ -829,11 +818,8 @@ export default function HomePage() {
               <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
                 <SummaryView 
                   calculatedRounds={calculationResult.calculatedRounds}
-                  totalInvestment={calculationResult.totalInvestment}
-                  finalValuation={calculationResult.finalValuation}
-                  finalOwnership={calculationResult.finalOwnership}
-                  exitCashFlows={calculationResult.exitCashFlows}
-                  isClient={isClient} 
+                  ownershipStages={calculationResult.ownershipStages}
+                  esopPercentage={esopPercentage}
                 />
               </div>
             </TabsContent>
@@ -841,7 +827,7 @@ export default function HomePage() {
               <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
                 <RevenueGrowthTable 
                   calculatedRounds={calculationResult.calculatedRounds} 
-                  acv={calculationResult.acvForGrowthTable} 
+                  acv={acv} 
                   onAcvChange={handleAcvChangeForGrowthTable}
                 />
               </div>
@@ -863,7 +849,7 @@ export default function HomePage() {
             <TabsContent value="investor-returns">
               <div className="p-2 sm:p-4 border rounded-lg mt-0 sm:mt-2">
                 <InvestorReturnsTable 
-                    investorReturns={calculationResult.investorReturns}
+                    ownershipStages={calculationResult.ownershipStages}
                     calculatedRounds={calculationResult.calculatedRounds} 
                 />
               </div>

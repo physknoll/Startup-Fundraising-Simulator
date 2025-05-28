@@ -19,7 +19,7 @@ export const generalTooltips: Record<string, TipData> = {
   },
   dilution: {
     title: "Dilution (%)",
-    explanation: "The percentage of the company given up to new investors in this round. For SAFEs, this is an effective dilution calculated upon conversion. Typical dilution also varies by stage.",
+    explanation: "The percentage of the company given up to new investors in this round. For SAFEs, this shows the dilution percentage calculated when the SAFE converts to equity (not the final ownership percentage, which may be further diluted by subsequent rounds).",
   },
   arrMultiple: {
     title: "ARR Multiple (x)",
@@ -82,8 +82,8 @@ export const generalTooltips: Record<string, TipData> = {
     explanation: "This is the default target for the Employee Stock Option Pool (ESOP) specifically for priced funding rounds, if not overridden by a per-round setting in the advanced section. The ESOP is typically established or expanded *before* new investment in a priced round, diluting all then-current shareholders. The percentage is usually of the post-money, fully-diluted capitalization."
   },
   globalLiquidationPreference: {
-    title: "Global Liquidation Preference (Default)",
-    explanation: "This toggle enables a default 1x Non-Participating Liquidation Preference for all investors in rounds where specific Liquidation Preference terms are not set in that round's advanced settings. Non-Participating means investors choose either their preference amount OR to convert to common and share pro-rata, whichever is greater. It does not apply to Founders or ESOP shares. Note: If total liquidation preference claims exceed exit proceeds, payouts are reduced pro-rata based on claim size, assuming all preferred shares rank equally (pari passu)."
+    title: "Global Liquidation Preference",
+    explanation: "This setting applies a default 1x Non-Participating liquidation preference to all rounds where Liquidation Preference terms are not set in that round&apos;s advanced settings. Non-Participating means investors choose either their preference amount OR to convert to common and share pro-rata, whichever is greater. It does not apply to Founders or ESOP."
   },
   protectiveProvisions: {
     title: "Protective Provisions",

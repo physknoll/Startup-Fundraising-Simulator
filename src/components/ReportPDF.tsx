@@ -335,6 +335,7 @@ const ReportPDF: React.FC<ReportPDFProps> = ({
         <View style={styles.section} break>
           <Text style={styles.sectionTitle}>Ownership Progression</Text>
           {ownershipChartImage ? (
+            // eslint-disable-next-line jsx-a11y/alt-text
             <Image src={ownershipChartImage} style={styles.chartImage} />
           ) : (
             <Text style={styles.text}>Ownership chart is being generated or was unavailable.</Text>
