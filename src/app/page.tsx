@@ -752,7 +752,7 @@ export default function HomePage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 md:mb-6">
           <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-2 sm:mb-0">Fundraising Rounds & Growth</h2>
         </div>
-        <InputParametersTable roundsData={inputRounds} handleInputChange={handleInputChange} handleRoundEnabledChange={handleRoundEnabledChange} />
+        <InputParametersTable roundsData={calculationResult.calculatedRounds} handleInputChange={handleInputChange} handleRoundEnabledChange={handleRoundEnabledChange} />
       </section>
 
       <section id="configuration" className="my-6 sm:my-8 md:my-12 p-3 sm:p-4 md:p-6 rounded-lg bg-card border">
